@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.DS_Store
+candidates.jsonl
+knockout_report.csv
+team_lyle.csv
+ranking_explanation.json
+out.csv
+sample_candidates.json
+*.jsonl
+*.csv
