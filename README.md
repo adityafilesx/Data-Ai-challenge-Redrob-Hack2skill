@@ -81,4 +81,3 @@ Data-Ai-challenge-Redrob-Hack2skill/
 - **Privacy & Connectivity**: No external API calls are made during the ranking process.
 - **Hardware Agnostic**: No GPU is required. The system is heavily optimized for CPU execution.
 - **Performance**: Tested runtime is ~10 seconds.
-- **Tooling**: AI tools used: Claude (architecture + code review), GitHub Copilot (autocomplete).
