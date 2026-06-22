@@ -1,4 +1,4 @@
-# Redrob Hackathon — Team Lyle
+# Redrob Hackathon — Team One Wish Willow
 
 ## Overview
 This repository contains a rule-based multi-component candidate ranking system developed for the **Intelligent Candidate Discovery & Ranking Challenge** hosted by Hack2skill and Redrob. 
