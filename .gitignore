@@ -6,6 +6,7 @@ knockout_report.csv
 team_lyle.csv
 ranking_explanation.json
 out.csv
-sample_candidates.json
 *.jsonl
 *.csv
+*.xlsx
+.venv/

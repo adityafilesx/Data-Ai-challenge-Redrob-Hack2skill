@@ -112,8 +112,10 @@ def main():
     t0 = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--candidates', required=True)
-    parser.add_argument('--out', required=True)
+    parser.add_argument('--team-id', default='lyle', help='Team ID for the output filename')
     args = parser.parse_args()
+    
+    out_filename = f'team_{args.team_id}.csv'
     
     print(f"[{time.time()-t0:.1f}s] Loading candidates...", file=sys.stderr)
     candidates = load_candidates(args.candidates)
@@ -146,8 +148,16 @@ def main():
     
     top100 = scored[:100]
     
+    # Pad to exactly 100 rows if necessary
+    if len(top100) < 100:
+        needed = 100 - len(top100)
+        for ko in knockouts[:needed]:
+            mock_cand = {'candidate_id': ko['candidate_id'], 'profile': {'name': ko['name']}}
+            mock_bd = {'knockout_triggered': True, 'padding_row': True}
+            top100.append((mock_cand, 0.0, mock_bd))
+    
     # Write Out CSV
-    with open(args.out, 'w', newline='', encoding='utf-8') as f:
+    with open(out_filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
         writer.writerow(['candidate_id', 'rank', 'score', 'reasoning'])
         prev_score = None
@@ -156,7 +166,12 @@ def main():
             if prev_score is not None and out_score > prev_score:
                 out_score = prev_score
             prev_score = out_score
-            reasoning = generate_reasoning(candidate, bd, rank_idx, score)
+            
+            if bd.get('padding_row'):
+                reasoning = "Candidate does not meet baseline criteria but is included to fulfill system row requirements."
+            else:
+                reasoning = generate_reasoning(candidate, bd, rank_idx, score)
+                
             writer.writerow([candidate.get('candidate_id', ''), rank_idx, out_score, reasoning])
             
     # Write Explanation JSON
@@ -168,7 +183,7 @@ def main():
     with open('ranking_explanation.json', 'w', encoding='utf-8') as f:
         json.dump(explanations, f, indent=2)
     
-    print(f"[{time.time()-t0:.1f}s] Done. Written {args.out}, knockout_report.csv, and ranking_explanation.json.", file=sys.stderr)
+    print(f"[{time.time()-t0:.1f}s] Done. Written {out_filename}, knockout_report.csv, and ranking_explanation.json.", file=sys.stderr)
 
 if __name__ == '__main__':
     main()

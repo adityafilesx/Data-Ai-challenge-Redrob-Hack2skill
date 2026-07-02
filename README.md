@@ -18,7 +18,7 @@ pip install -r requirements.txt
 ## Reproduce Submission
 To run the candidate ranking pipeline, execute the main entry point script:
 ```bash
-python rank.py --candidates ./candidates.jsonl --out ./team_lyle.csv
+python rank.py --candidates ./candidates.jsonl --team-id lyle
 python validate_submission.py team_lyle.csv
 ```
 **Expected runtime:** ~10 seconds for 100K candidates on a modern CPU. 
@@ -39,7 +39,16 @@ The system consists of a 5-component technical fit score modulated by a behavior
 - **Title Verification**: Verifies ML and software engineering history using previous titles.
 
 ## Sandbox (Interactive UI)
-We have built an interactive Streamlit application to visualize the scoring logic and sandbox candidate profiles. You can run the Streamlit sandbox locally:
+We have built an interactive Streamlit application to visualize the scoring logic, sandbox candidate profiles, and act as an **Interactive XAI Recruiter Tuner**.
+
+**Run via Docker (Recommended for Hackathon Judges):**
+```bash
+docker build -t redrob-sandbox .
+docker run -p 8501:8501 redrob-sandbox
+```
+Then open `http://localhost:8501` in your browser.
+
+**Run locally:**
 ```bash
 streamlit run sandbox/app.py
 ```
